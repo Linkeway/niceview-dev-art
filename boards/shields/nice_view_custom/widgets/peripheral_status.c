@@ -53,8 +53,10 @@ LV_IMG_DECLARE(hammerbeam27);
 LV_IMG_DECLARE(hammerbeam28);
 LV_IMG_DECLARE(hammerbeam29);
 LV_IMG_DECLARE(hammerbeam30);
+LV_IMG_DECLARE(vim);
 
 const lv_img_dsc_t *anim_imgs[] = {
+    &vim,
     &hammerbeam1,
     &hammerbeam2,
     &hammerbeam3,
@@ -178,7 +180,7 @@ int zmk_widget_status_init(struct zmk_widget_status *widget, lv_obj_t *parent) {
 
     lv_obj_t * art = lv_animimg_create(widget->obj);
     lv_obj_center(art);
-    lv_animimg_set_src(art, (const void **) anim_imgs, 30);
+    lv_animimg_set_src(art, (const void **) anim_imgs, 31);
     lv_animimg_set_duration(art, CONFIG_CUSTOM_ANIMATION_SPEED);
     lv_animimg_set_repeat_count(art, LV_ANIM_REPEAT_INFINITE);
     lv_animimg_start(art);
