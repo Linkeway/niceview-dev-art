@@ -70,7 +70,3 @@ CONFIG_CUSTOM_ANIMATION_SPEED=300000 # 300 second total duration
     ```
 1. Open the file `boards/shields/nice_view/widgets/peripheral_status.c` and add a line for your new art like `LV_IMG_DECLARE(<art name>);` near the top. Optionally, adding it as the first item in the array so that it shows up first when keyboard is reset.
 1. In the same file, add a line  `&<art_name>,` after `const lv_img_dsc_t *anim_imgs[] = {`
-1. In the same file, increment the number of images by one for the line `lv_animimg_set_src(art, (const void **) anim_imgs, <image number>);`
-1. In `boards/shields/nice_view_custom/CMakeLists.txt`, add a line to tell the build system to include your new source file. Add the following line alongside the other zephyr_library_sources directives for the widgets: `zephyr_library_sources(widgets/arts/<art name>.c)` after the `zephyr_library_sources(widgets/art.c)` line.
-
-
