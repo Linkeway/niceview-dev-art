@@ -6,7 +6,7 @@
 #elif defined(LV_BUILD_TEST)
 #include "../lvgl.h"
 #else
-#include "lvgl/lvgl.h"
+#include "lvgl.h"
 #endif
 
 #ifndef LV_ATTRIBUTE_MEM_ALIGN
@@ -100,18 +100,15 @@ uint8_t vim_map[] = {
 
 };
 
-const lv_image_dsc_t vim = {
+const lv_img_dsc_t vim = {
   .header = {
-    .magic = LV_IMAGE_HEADER_MAGIC,
-    .cf = LV_COLOR_FORMAT_I1,
-    .flags = 0,
+    .cf = LV_IMG_CF_INDEXED_1BIT,
+    .always_zero = 0,
     .w = 140,
     .h = 68,
-    .stride = 18,
-    .reserved_2 = 0,
+    .reserved = 0,
   },
   .data_size = sizeof(vim_map),
   .data = vim_map,
-  .reserved = NULL,
+  // .reserved = 0,
 };
-
