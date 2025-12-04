@@ -98,6 +98,14 @@ The workflow can be used as a playbook for AI execution.
    ./convert_png_to_c_code.sh assets/<art_name>.png
    ```
    This script will create a new file `boards/shields/nice_view_custom/widgets/arts/<art_name>.c` with the pixel data included.
+1. Visually check the generated art.
+   ```bash
+   ./visualize_art.py boards/shields/nice_view_custom/widgets/arts/<art_name>.c
+   ```
+   This will open the art in your default image viewer. If the colors appear inverted (e.g., white art on a black background when you expect black art on white), use the `--inverted` flag:
+   ```bash
+   ./visualize_art.py boards/shields/nice_view_custom/widgets/arts/<art_name>.c --inverted
+   ```
 1. In `boards/shields/nice_view_custom/widgets/peripheral_status.c`, add the following lines for your new art near the top. Remember to replace `<ART_NAME>` with the uppercase version of your art's name.
     ```c
     #if IS_ENABLED(CONFIG_CUSTOM_ART_<ART_NAME>)
