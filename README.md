@@ -47,9 +47,19 @@ If you want to change the speed of the animation, you can edit the speed by chan
 For example:
 
 ```conf
-# urchin.conf
+# your keyboard project's config/<your_project>.conf
 CONFIG_CUSTOM_ANIMATION_SPEED=300000 # 300 second total duration
 # 30 pictures, so 10 seconds per picture
+```
+
+If you want to disable specific images, you can set their corresponding configuration flags to `n` in your keyboard project's (not this repo) `config/<your_project>.conf` file.
+The flags are named `CONFIG_CUSTOM_ART_<IMAGE_NAME>` where `<IMAGE_NAME>` is the uppercase version of the image name.
+For example, to disable the `vim` and `hammerbeam1` images:
+
+```conf
+# your keyboard project's config/<your_project>.conf
+CONFIG_CUSTOM_ART_VIM=n
+CONFIG_CUSTOM_ART_HAMMERBEAM1=n
 ```
 
 ## Adding new arts
@@ -62,17 +72,24 @@ The workflow can be used as a playbook for AI execution.
    ```
 1. Copy the printed out pixel array.
 1. Use `boards/shields/nice_view/widgets/arts/art_name.c.template` as a template, create a new `boards/shields/nice_view/widgets/arts/<art name>.c`.
-1. Replace the `<art_name>` with the actual art name; replace `<ART_NAME>` with the upper case name.
+1. In the new .c file, replace the `<art_name>` with the actual art name; replace `<ART_NAME>` with the upper case name.
 1. Paste the pixel array to the file.
-1. Now check the resulting C code under `boards/shields/nice_view/widgets/arts/<art name>.c`, find `<art name>_map[] = {` and replace the two color index lines with the following copied from the "mountain" or "balloon" images where "<art name>" is the name you put into the Image Converter:
+1. In `boards/shields/nice_view_custom/widgets/peripheral_status.c`, add the following lines for your new art near the top. Remember to replace `<ART_NAME>` with the uppercase version of your art's name.
     ```c
-    #if CONFIG_NICE_VIEW_WIDGET_INVERTED
-            0xff, 0xff, 0xff, 0xff, /*Color of index 0*/
-            0x00, 0x00, 0x00, 0xff, /*Color of index 1*/
-    #else
-            0x00, 0x00, 0x00, 0xff, /*Color of index 0*/
-            0xff, 0xff, 0xff, 0xff, /*Color of index 1*/
+    #if IS_ENABLED(CONFIG_CUSTOM_ART_<ART_NAME>)
+    LV_IMG_DECLARE(<art_name>);
     #endif
     ```
-1. Open the file `boards/shields/nice_view/widgets/peripheral_status.c` and add a line for your new art like `LV_IMG_DECLARE(<art name>);` near the top. Optionally, adding it as the first item in the array so that it shows up first when keyboard is reset.
-1. In the same file, add a line  `&<art_name>,` after `const lv_img_dsc_t *anim_imgs[] = {`
+1. In the same file, add the following lines after `const lv_img_dsc_t *anim_imgs[] = {`. Remember to replace `<ART_NAME>` with the uppercase version of your art's name. Optionally, adding it as the first item in the array so that it shows up first when keyboard is reset.
+    ```c
+    #if IS_ENABLED(CONFIG_CUSTOM_ART_<ART_NAME>)
+    &<art_name>,
+    #endif
+    ```
+1. Open `boards/shields/nice_view_custom/Kconfig.defconfig` and add a new config entry for your art. For example:
+    ```kconfig
+    config CUSTOM_ART_<ART_NAME>
+        bool "Show <art name> art"
+        default y
+    ```
+    Remember to replace `<ART_NAME>` with the uppercase version of your art's name and `<art name>` with the regular name.
