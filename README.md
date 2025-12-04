@@ -13,6 +13,7 @@ If you have an idea for new art, please open an issue.
 This project is a fork of the excellent [GPeye/hammerbeam-slideshow](https://github.com/GPeye/hammerbeam-slideshow), adding on top of the original Hammerbeam art with developer-focused pixel art.
 
 ## Usage
+Eaxmple commit to use this repo for your keyboard repo can be seen [here](https://github.com/Linkeway/zmk-sofle/commit/405490bba00eee40d147506293cb0d865d9e03c0).
 
 To use this module, first add it to your config/west.yml by adding a new entry to remotes and projects:
 
@@ -91,15 +92,12 @@ CONFIG_CUSTOM_ART_VIM=n
 ## Adding new arts
 The workflow can be used as a playbook for AI execution.
 
-1. Generate new PNG file and save it to `assets/` folder. When using AI, ask it to generate with a resolution of 68x140. This will help you better evaluate the final look on the display.
-1. Use the command to convert the PNG to C code
+1. Generate new PNG/JPG file and save it to `assets/` folder. When using AI, ask it to generate with a resolution of 68x140. This will help you better evaluate the final look on the display.
+1. Use the command to convert the image and create the C source file for the art.
    ```bash
    ./convert_png_to_c_code.sh assets/<art_name>.png
    ```
-1. Copy the printed out pixel array.
-1. Use `boards/shields/nice_view/widgets/arts/art_name.c.template` as a template, create a new `boards/shields/nice_view/widgets/arts/<art name>.c`.
-1. In the new .c file, replace the `<art_name>` with the actual art name; replace `<ART_NAME>` with the upper case name.
-1. Paste the pixel array to the file.
+   This script will create a new file `boards/shields/nice_view_custom/widgets/arts/<art_name>.c` with the pixel data included.
 1. In `boards/shields/nice_view_custom/widgets/peripheral_status.c`, add the following lines for your new art near the top. Remember to replace `<ART_NAME>` with the uppercase version of your art's name.
     ```c
     #if IS_ENABLED(CONFIG_CUSTOM_ART_<ART_NAME>)

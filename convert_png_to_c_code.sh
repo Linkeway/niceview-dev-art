@@ -42,15 +42,41 @@ echo "-------------------------------------------------"
 # 2. Convert to C array using LVGLImage.py
 echo "Converting to C array..."
 # we don't use the generated code directly, as the LVGL version in ZMK firmware doesn't match the LVGl version that provides LVGLImage.py
-# OUTPUT_C_FOLDER="boards/shields/nice_view_custom/widgets/arts/"
 OUTPUT_C_FOLDER="/tmp/"
 python3 "$LVGL_IMG_SCRIPT" "$TEMP_PNG" --cf I1 --ofmt C -o \
 	"$OUTPUT_C_FOLDER"
 
 OUTPUT_C_FILE="$OUTPUT_C_FOLDER/${FILENAME}.c"
-echo "Done. C array written to ${OUTPUT_C_FILE}. Printing contents:"
+echo "Done. C array written to ${OUTPUT_C_FILE}."
 
-cat "${OUTPUT_C_FILE}"
-# rm -f "$TEMP_PNG"
-# rm -f "${OUTPUT_C_FILE}"
+ART_NAME="$FILENAME"
+ART_NAME_UPPER=$(echo "$ART_NAME" | tr '[:lower:]' '[:upper:]')
+ARTS_DIR="boards/shields/nice_view_custom/widgets/arts"
+TEMPLATE_FILE="$ARTS_DIR/art_name.c.template"
+NEW_ART_FILE="$ARTS_DIR/${ART_NAME}.c"
+
+echo "-------------------------------------------------"
+echo "Creating new art file ${NEW_ART_FILE} from template..."
+
+# Create the new art file from template and replace placeholders
+sed "s/<art_name>/$ART_NAME/g; s/<ART_NAME>/$ART_NAME_UPPER/g" "$TEMPLATE_FILE" > "$NEW_ART_FILE"
+
+# Extract pixel data from the generated C file
+PIXEL_DATA_FILE="/tmp/${ART_NAME}_pixel_data.txt"
+awk '/_map\[\] = {/ {p=1; next} /};/ {p=0} p' "$OUTPUT_C_FILE" > "$PIXEL_DATA_FILE"
+
+# Insert pixel data into the new art file
+# Using a temporary file for sed because of macOS sed compatibility
+TMP_NEW_ART_FILE=$(mktemp)
+# The template contains the placeholder comment "// Paste the actual pixel array below!!".
+# The following command replaces the line with the placeholder with the content of the pixel data file.
+sed -e "/\/\/ Paste the actual pixel array below!!/r $PIXEL_DATA_FILE" -e "/\/\/ Paste the actual pixel array below!!/d" "$NEW_ART_FILE" > "$TMP_NEW_ART_FILE"
+mv "$TMP_NEW_ART_FILE" "$NEW_ART_FILE"
+
+echo "Done. New art file created at ${NEW_ART_FILE}."
+
+# Clean up temporary files
+rm -f "$TEMP_PNG"
+rm -f "${OUTPUT_C_FILE}"
+rm -f "${PIXEL_DATA_FILE}"
 
