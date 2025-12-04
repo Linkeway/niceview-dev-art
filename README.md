@@ -1,9 +1,16 @@
 # Nice!View Dev Arts
-This is a zmk module to implement a slideshow of a collection of programming-themed 1 bit art on the peripheral (right) nice!view display.
 
-NOTE: This is a fork off the beautiful [GPeye/hammerbeam-slideshow repo](https://github.com/GPeye/hammerbeam-slideshow) but replace the beautiful arts from Hammerbeam with my dev related pixel arts.
+This ZMK module displays a slideshow of **programming-themed** 1-bit art on the peripheral (right-hand) nice!view display.
+It offers a great balance between aesthetics and battery life, cycling through a collection of 30+ images at a configurable interval.
 
-The picture to be displayed by this module on the peripheral screen will be one of these 30+ and will change every 10 seconds.
+The repo is structured for easier adding and sharing new arts.
+New art can be added to the repository for everyone to use, and _**each piece is individually configurable so you can curate your own collection in your keyboard project**_.
+Contributions are welcome!
+If you have an idea for new art, please open an issue.
+
+![art](./assets/vim.png)
+
+This project is a fork of the excellent [GPeye/hammerbeam-slideshow](https://github.com/GPeye/hammerbeam-slideshow), adding on top of the original Hammerbeam art with developer-focused pixel art.
 
 ## Usage
 
@@ -40,32 +47,51 @@ include:
     shield: urchin_right nice_view_adapter nice_view_custom #custom shield
 ```
 
-by default the this urchin animation will run for a duration of 300 seconds, 10 seconds per picture, fairly slow to save battery
-
-If you want to change the speed of the animation, you can edit the speed by changing the CONFIG_CUSTOM_ANIMATION_SPEED in your .conf file
+By default, the full slideshow will run for a duration of 300 seconds (around 10 seconds per picture), which is slow to conserve battery life.
+If you want to change the speed of the animation, you can edit the speed by changing the `CONFIG_CUSTOM_ANIMATION_SPEED` in your `.conf` file.
 
 For example:
-
 ```conf
 # your keyboard project's config/<your_project>.conf
-CONFIG_CUSTOM_ANIMATION_SPEED=300000 # 300 second total duration
-# 30 pictures, so 10 seconds per picture
+CONFIG_CUSTOM_ANIMATION_SPEED=300000 # 300 second total duration for all arts
 ```
 
-If you want to disable specific images, you can set their corresponding configuration flags to `n` in your keyboard project's (not this repo) `config/<your_project>.conf` file.
-The flags are named `CONFIG_CUSTOM_ART_<IMAGE_NAME>` where `<IMAGE_NAME>` is the uppercase version of the image name.
-For example, to disable the `vim` and `hammerbeam1` images:
+### Configuring Your Slideshow
+
+This module operates in a "curator" mode by default to prevent firmware bloat. No art is included unless you explicitly enable it.
+
+#### Curating Your Collection
+
+To add specific art to your slideshow, enable it in your keyboard project's `config/<your_keyboard>.conf` file:
 
 ```conf
-# your keyboard project's config/<your_project>.conf
-CONFIG_CUSTOM_ART_VIM=n
-CONFIG_CUSTOM_ART_HAMMERBEAM1=n
+# I want to see these specific art pieces
+CONFIG_CUSTOM_ART_VIM=y
+CONFIG_CUSTOM_ART_HAMMERBEAM1=y
+CONFIG_CUSTOM_ART_HAMMERBEAM2=y
+```
+
+#### Surprise Me: The Featured Art
+
+If you enjoy surprises, you can have the single latest/featured art piece automatically included when you rebuild firmware. This is enabled by default via the `CONFIG_CUSTOM_ART_SURPRISE_ME` flag.
+
+If you wish to disable this feature, add the following to your `.conf` file:
+```conf
+# Disable the featured art
+CONFIG_CUSTOM_ART_SURPRISE_ME=n
+```
+
+If you don't like the *currently* featured art, you can also disable it specifically without turning off the feature for future art:
+```conf
+# I want featured art, but I don't like the 'vim' one
+CONFIG_CUSTOM_ART_SURPRISE_ME=y
+CONFIG_CUSTOM_ART_VIM=n 
 ```
 
 ## Adding new arts
 The workflow can be used as a playbook for AI execution.
 
-1. Generate new PNG file and save it to `assets/` folder. When uisng AI, ask it to generate with a resolution of 68x140. This will help you better evaluate the final look on the display.
+1. Generate new PNG file and save it to `assets/` folder. When using AI, ask it to generate with a resolution of 68x140. This will help you better evaluate the final look on the display.
 1. Use the command to convert the PNG to C code
    ```bash
    ./convert_png_to_c_code.sh assets/<art_name>.png
@@ -86,10 +112,20 @@ The workflow can be used as a playbook for AI execution.
     &<art_name>,
     #endif
     ```
-1. Open `boards/shields/nice_view_custom/Kconfig.defconfig` and add a new config entry for your art. For example:
+1. Open `boards/shields/nice_view_custom/Kconfig.defconfig`. This repo uses a "Featured Art" system to avoid firmware bloat for users. When adding new art, you should make it the new featured piece.
+    *   **Add the new art's config**, giving it the special `default y if CUSTOM_ART_SURPRISE_ME`.
+    *   **Find the previous featured art** (the one with `default y if...`) and change its default to `n`.
+
+    For example, if you are adding `neovim` and `vim` was the old featured art:
     ```kconfig
-    config CUSTOM_ART_<ART_NAME>
-        bool "Show <art name> art"
-        default y
+    # 1. Add the new art with the special default
+    config CUSTOM_ART_NEOVIM
+        bool "Show neovim art"
+        default y if CUSTOM_ART_SURPRISE_ME
+        default n
+
+    # 2. Change the old featured art's default back to n
+    config CUSTOM_ART_VIM
+        bool "Show vim art"
+        default n
     ```
-    Remember to replace `<ART_NAME>` with the uppercase version of your art's name and `<art name>` with the regular name.

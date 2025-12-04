@@ -3,3 +3,12 @@
 
 config SHIELD_NICE_VIEW_CUSTOM
     def_bool $(shields_list_contains,nice_view_custom)
+
+config CUSTOM_ART_SURPRISE_ME
+    bool "Include the single newest/featured art piece"
+    default y
+    help
+      If enabled, the one art piece currently featured by the repository
+      will be automatically included in your slideshow. This lets you
+      sample new art without adding everything. You can still disable
+      it with its own flag if you don't like it.
