@@ -116,8 +116,14 @@ LV_IMG_DECLARE(hammerbeam30);
 #if IS_ENABLED(CONFIG_CUSTOM_ART_VIM)
 LV_IMG_DECLARE(vim);
 #endif
+#if IS_ENABLED(CONFIG_CUSTOM_ART_CPP)
+LV_IMG_DECLARE(cpp);
+#endif
 
 const lv_img_dsc_t *anim_imgs[] = {
+#if IS_ENABLED(CONFIG_CUSTOM_ART_CPP)
+    &cpp,
+#endif
 #if IS_ENABLED(CONFIG_CUSTOM_ART_VIM)
     &vim,
 #endif
