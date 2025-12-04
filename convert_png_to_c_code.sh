@@ -41,8 +41,9 @@ open "${TEMP_PNG}" # open to check visually
 echo "-------------------------------------------------"
 # 2. Convert to C array using LVGLImage.py
 echo "Converting to C array..."
-# LVGLImage.py creates the output file in the 'output' directory by default.
-OUTPUT_C_FOLDER="boards/shields/nice_view_custom/widgets/arts/"
+# we don't use the generated code directly, as the LVGL version in ZMK firmware doesn't match the LVGl version that provides LVGLImage.py
+# OUTPUT_C_FOLDER="boards/shields/nice_view_custom/widgets/arts/"
+OUTPUT_C_FOLDER="/tmp/"
 python3 "$LVGL_IMG_SCRIPT" "$TEMP_PNG" --cf I1 --ofmt C -o \
 	"$OUTPUT_C_FOLDER"
 

@@ -53,11 +53,17 @@ CONFIG_CUSTOM_ANIMATION_SPEED=300000 # 300 second total duration
 ```
 
 ## Adding new arts
+The workflow can be used as a playbook for AI execution.
+
 1. Generate new PNG file and save it to `assets/` folder. When uisng AI, ask it to generate with a resolution of 68x140. This will help you better evaluate the final look on the display.
 1. Use the command to convert the PNG to C code
    ```bash
    ./convert_png_to_c_code.sh assets/<art_name>.png
    ```
+1. Copy the printed out pixel array.
+1. Use `boards/shields/nice_view/widgets/arts/art_name.c.template` as a template, create a new `boards/shields/nice_view/widgets/arts/<art name>.c`.
+1. Replace the `<art_name>` with the actual art name; replace `<ART_NAME>` with the upper case name.
+1. Paste the pixel array to the file.
 1. Now check the resulting C code under `boards/shields/nice_view/widgets/arts/<art name>.c`, find `<art name>_map[] = {` and replace the two color index lines with the following copied from the "mountain" or "balloon" images where "<art name>" is the name you put into the Image Converter:
     ```c
     #if CONFIG_NICE_VIEW_WIDGET_INVERTED

@@ -1,0 +1,47 @@
+
+#if defined(LV_LVGL_H_INCLUDE_SIMPLE)
+#include "lvgl.h"
+#elif defined(LV_LVGL_H_INCLUDE_SYSTEM)
+#include <lvgl.h>
+#elif defined(LV_BUILD_TEST)
+#include "../lvgl.h"
+#else
+#include "lvgl.h"
+#endif
+
+#ifndef LV_ATTRIBUTE_MEM_ALIGN
+#define LV_ATTRIBUTE_MEM_ALIGN
+#endif
+
+#ifndef LV_ATTRIBUTE_<ART_NAME>
+#define LV_ATTRIBUTE_<ART_NAME>
+#endif
+
+static const
+LV_ATTRIBUTE_MEM_ALIGN LV_ATTRIBUTE_LARGE_CONST LV_ATTRIBUTE_<ART_NAME>
+uint8_t <art_name>_map[] = {
+
+#if CONFIG_NICE_VIEW_WIDGET_INVERTED
+        0xff, 0xff, 0xff, 0xff, /*Color of index 0*/
+        0x00, 0x00, 0x00, 0xff, /*Color of index 1*/
+#else
+        0x00, 0x00, 0x00, 0xff, /*Color of index 0*/
+        0xff, 0xff, 0xff, 0xff, /*Color of index 1*/
+#endif
+
+    // Paste the actual pixel array below!!
+
+};
+
+const lv_img_dsc_t <art_name> = {
+  .header = {
+    .cf = LV_IMG_CF_INDEXED_1BIT,
+    .always_zero = 0,
+    .w = 140,
+    .h = 68,
+    .reserved = 0,
+  },
+  .data_size = sizeof(<art_name>_map),
+  .data = <art_name>_map,
+  // .reserved = 0,
+};
