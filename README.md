@@ -8,7 +8,7 @@ New art can be added to the repository for everyone to use, and _**each piece is
 Contributions are welcome!
 If you have an idea for new art, please open an issue.
 
-![art](./assets/vim.png)
+![demo](./assets/demo.jpeg)
 
 This project is a fork of the excellent [GPeye/hammerbeam-slideshow](https://github.com/GPeye/hammerbeam-slideshow), adding on top of the original Hammerbeam art with developer-focused pixel art.
 
