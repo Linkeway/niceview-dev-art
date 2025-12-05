@@ -1,19 +1,21 @@
 # Nice!View Dev Arts
 
-This ZMK module displays a slideshow of **programming-themed** 1-bit art on the peripheral (right-hand) nice!view display.
+This ZMK module displays a slideshow of 1-bit pixel art on the peripheral (right-hand) nice!view display.
 It offers a great balance between aesthetics and battery life, cycling through a collection of 30+ images at a configurable interval.
 
 The repo is structured for easier adding and sharing new arts.
-New art can be added to the repository for everyone to use, and _**each piece is individually configurable so you can curate your own collection in your keyboard project**_.
-Contributions are welcome!
+New art can be added to the repository for everyone to use, and _**each piece is individually configurable so you can curate your own collection**_ in your keyboard project.
+
+Contributions are welcome! Share your art for others to select!
 If you have an idea for new art, please open an issue.
 
+Check the [assets folder](./assets/) for more demo.
 ![demo](./assets/demo.jpeg)
 
-This project is a fork of the excellent [GPeye/hammerbeam-slideshow](https://github.com/GPeye/hammerbeam-slideshow), adding on top of the original Hammerbeam art with developer-focused pixel art.
+This project is a fork of the excellent [GPeye/hammerbeam-slideshow](https://github.com/GPeye/hammerbeam-slideshow), adding on top of the original Hammerbeam art with more pixel art.
 
 ## Usage
-Eaxmple commit to use this repo for your keyboard repo can be seen [here](https://github.com/Linkeway/zmk-sofle/commit/405490bba00eee40d147506293cb0d865d9e03c0).
+Eaxmple commit to use this repo for your keyboard repo can be seen [here](https://github.com/Linkeway/zmk-sofle/commit/fb6721ce22e0f247687ddca1d8972fd0153278f5).
 
 To use this module, first add it to your config/west.yml by adding a new entry to remotes and projects:
 
