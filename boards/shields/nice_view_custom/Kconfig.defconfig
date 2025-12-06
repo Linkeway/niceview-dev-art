@@ -13,6 +13,10 @@ config CUSTOM_ART_VIM
 
 config CUSTOM_ART_CHILL
     bool "Show chill art"
+    default n
+
+config CUSTOM_ART_LGTM
+    bool "Show lgtm art"
     default y if CUSTOM_ART_SURPRISE_ME
     default n
 
