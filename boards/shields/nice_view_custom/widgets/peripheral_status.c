@@ -26,6 +26,9 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #if IS_ENABLED(CONFIG_CUSTOM_ART_HAMMERBEAM1)
 LV_IMG_DECLARE(hammerbeam1);
 #endif
+#if IS_ENABLED(CONFIG_CUSTOM_ART_CHILL)
+LV_IMG_DECLARE(chill);
+#endif
 #if IS_ENABLED(CONFIG_CUSTOM_ART_HAMMERBEAM2)
 LV_IMG_DECLARE(hammerbeam2);
 #endif
@@ -121,6 +124,9 @@ LV_IMG_DECLARE(cpp);
 #endif
 
 const lv_img_dsc_t *anim_imgs[] = {
+#if IS_ENABLED(CONFIG_CUSTOM_ART_CHILL)
+    &chill,
+#endif
 #if IS_ENABLED(CONFIG_CUSTOM_ART_CPP)
     &cpp,
 #endif

@@ -11,9 +11,13 @@ config CUSTOM_ART_VIM
     bool "Show vim art"
     default n
 
+config CUSTOM_ART_CHILL
+    bool "Show chill art"
+    default y if CUSTOM_ART_SURPRISE_ME
+    default n
+
 config CUSTOM_ART_CPP
     bool "Show cpp art"
-    default y if CUSTOM_ART_SURPRISE_ME
     default n
 
 config CUSTOM_ART_HAMMERBEAM1

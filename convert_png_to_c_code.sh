@@ -36,7 +36,7 @@ echo "Scaling and rotate $INPUT_FILE..."
 # magick "$INPUT_FILE" -scale 68x140\! -rotate 90 -monochrome "$TEMP_PNG"
 magick "$INPUT_FILE" -scale 68x140\! -rotate 90 "$TEMP_PNG"
 echo "Done. Check the scaled and rotated img under ${TEMP_PNG}."
-open "${TEMP_PNG}" # open to check visually
+# open "${TEMP_PNG}" # open to check visually
 
 echo "-------------------------------------------------"
 # 2. Convert to C array using LVGLImage.py
@@ -67,7 +67,8 @@ PIXEL_DATA_FILE="/tmp/${ART_NAME}_pixel_data.txt"
 # of the image map array. The following awk command extracts the pixel data while
 # skipping the first line that contains "0x" inside the image map array, which is
 # assumed to be the palette.
-awk '/_map\[\] = {/ {in_array=1; next} /};/ {in_array=0} in_array { if (/0x/ && !palette_skipped) { palette_skipped=1; next; } print; }' "$TMP_C_FILE" > "$PIXEL_DATA_FILE"
+awk '/_map\[\] = {/ {in_array=1; next} /};/ {in_array=0} in_array { if (/0x/ && !palette_skipped) { palette_skipped=1; next; } print; }' \
+	"$TMP_C_FILE" > "$PIXEL_DATA_FILE"
 
 # Insert pixel data into the new art file
 # Using a temporary file for sed because of macOS sed compatibility
@@ -84,3 +85,4 @@ rm -f "$TEMP_PNG"
 rm -f "${TMP_C_FILE}"
 rm -f "${PIXEL_DATA_FILE}"
 
+python3 visualize_art.py "${NEW_ART_FILE}"
