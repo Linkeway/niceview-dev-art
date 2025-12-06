@@ -130,14 +130,14 @@ const lv_img_dsc_t *anim_imgs[] = {
 #if IS_ENABLED(CONFIG_CUSTOM_ART_LGTM)
     &lgtm,
 #endif
-#if IS_ENABLED(CONFIG_CUSTOM_ART_CHILL)
-    &chill,
-#endif
 #if IS_ENABLED(CONFIG_CUSTOM_ART_CPP)
     &cpp,
 #endif
 #if IS_ENABLED(CONFIG_CUSTOM_ART_VIM)
     &vim,
+#endif
+#if IS_ENABLED(CONFIG_CUSTOM_ART_CHILL)
+    &chill,
 #endif
 #if IS_ENABLED(CONFIG_CUSTOM_ART_HAMMERBEAM1)
     &hammerbeam1,
