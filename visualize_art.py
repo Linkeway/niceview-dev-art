@@ -61,7 +61,7 @@ def create_image_from_bitmap(width, height, pixel_data, palette):
     Creates a paletted PIL Image from the raw pixel data, accounting for row padding.
     """
     img = Image.new('P', (width, height))
-    
+
     # putpalette expects a flat list of [R0, G0, B0, R1, G1, B1, ...]
     flat_palette = [c for color in palette for c in color]
     img.putpalette(flat_palette)
@@ -74,25 +74,26 @@ def create_image_from_bitmap(width, height, pixel_data, palette):
         row_byte_start = y * bytes_per_row
         row_byte_end = row_byte_start + bytes_per_row
         row_bytes = pixel_data[row_byte_start:row_byte_end]
-        
+
         row_bit_stream = ''.join(f'{byte:08b}' for byte in row_bytes)
-        
+
         for x in range(width):
             bit = int(row_bit_stream[x])
             pixels[x, y] = bit  # The bit value is the index into the palette
-            
+
     return img
 
 def main():
     parser = argparse.ArgumentParser(description='Visualize a 1-bit bitmap from a C art file.')
     parser.add_argument('file_path', help='Path to the C art file (e.g., boards/shields/nice_view_custom/widgets/arts/cpp.c)')
     parser.add_argument('--inverted', action='store_true', help='Use the inverted palette from the C file (usually for a black background).')
+    parser.add_argument('--output', help='Path to save the output image (e.g., output.png). If not provided, the image will be displayed.')
 
     args = parser.parse_args()
 
     try:
         width, height, pixel_data, normal_palette, inverted_palette = parse_c_file(args.file_path)
-        
+
         print(f"Image dimensions: {width}x{height}")
         print(f"Number of bytes in pixel data: {len(pixel_data)}")
         bytes_per_row = (width + 7) // 8
@@ -101,16 +102,19 @@ def main():
 
         if not pixel_data:
             raise ValueError("No pixel data found in the file.")
-        
+
         # Choose the palette based on the --inverted flag
         palette = inverted_palette if args.inverted else normal_palette
-            
+
         img = create_image_from_bitmap(width, height, pixel_data, palette)
 
         # Rotate the image 90 degrees counter-clockwise
         img = img.rotate(90, expand=True)
 
-        # Show the image using the default image viewer
+        # Show and potentially save the image
+        if args.output:
+            img.save(args.output)
+            print(f"Image saved to '{args.output}'")
         img.show()
 
     except FileNotFoundError:

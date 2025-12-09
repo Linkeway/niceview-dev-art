@@ -94,10 +94,11 @@ CONFIG_CUSTOM_ART_VIM=n
 ## Adding new arts
 The workflow can be used as a playbook for AI execution.
 
-1. Generate new PNG/JPG file and save it to `assets/` folder. When using AI, ask it to generate with a resolution of 68x140. This will help you better evaluate the final look on the display.
+1. Generate new PNG/JPG file and save it (with a meaningful file name). When using AI, ask it to generate with a resolution of 68x140. This will help you better evaluate the final look on the display.
 1. Use the command to convert the image and create the C source file for the art.
    ```bash
-   ./convert_png_to_c_code.sh assets/<art_name>.png
+   ./convert_png_to_c_code.sh <art_name>.png
+   ./convert_png_to_c_code.sh <art_name>.jpg
    ```
    This script will create a new file `boards/shields/nice_view_custom/widgets/arts/<art_name>.c` with the pixel data included.
 1. Visually check the generated art.

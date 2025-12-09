@@ -85,4 +85,4 @@ rm -f "$TEMP_PNG"
 rm -f "${TMP_C_FILE}"
 rm -f "${PIXEL_DATA_FILE}"
 
-python3 visualize_art.py "${NEW_ART_FILE}" --invert
+python3 visualize_art.py "${NEW_ART_FILE}" --invert --output assets/"${ART_NAME}.png"
