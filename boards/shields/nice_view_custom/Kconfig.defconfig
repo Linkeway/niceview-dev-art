@@ -15,9 +15,13 @@ config CUSTOM_ART_CHILL
     bool "Show chill art"
     default n
 
+config CUSTOM_ART_VIBE_CODING
+    bool "Show vibe coding art"
+    default y if CUSTOM_ART_SURPRISE_ME
+    default n
+
 config CUSTOM_ART_SHIP_IT
     bool "Show ship it art"
-    default y if CUSTOM_ART_SURPRISE_ME
     default n
 
 config CUSTOM_ART_LGTM

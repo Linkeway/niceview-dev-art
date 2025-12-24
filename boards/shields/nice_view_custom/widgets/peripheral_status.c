@@ -129,7 +129,14 @@ LV_IMG_DECLARE(lgtm);
 LV_IMG_DECLARE(ship_it);
 #endif
 
+#if IS_ENABLED(CONFIG_CUSTOM_ART_VIBE_CODING)
+LV_IMG_DECLARE(vibe_coding);
+#endif
+
 const lv_img_dsc_t *anim_imgs[] = {
+#if IS_ENABLED(CONFIG_CUSTOM_ART_VIBE_CODING)
+    &vibe_coding,
+#endif
 #if IS_ENABLED(CONFIG_CUSTOM_ART_SHIP_IT)
     &ship_it,
 #endif
