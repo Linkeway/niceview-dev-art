@@ -3,6 +3,10 @@
 
 config SHIELD_NICE_VIEW_CUSTOM
     def_bool $(shields_list_contains,nice_view_custom)
+    select ZMK_BEHAVIORS if ZMK_DISPLAY
+
+config ZMK_BEHAVIOR_ART_CONTROL
+    def_bool $(dt_compat_enabled,zmk_behavior_art_control)
 
 config CUSTOM_ART_SURPRISE_ME
     bool "Include the single newest/featured art piece"

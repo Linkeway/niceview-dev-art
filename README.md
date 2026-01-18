@@ -59,6 +59,37 @@ For example:
 CONFIG_CUSTOM_ANIMATION_SPEED=300000 # 300 second total duration for all arts
 ```
 
+### Manual Slideshow Control
+
+In addition to automatic playback, you can now manually cycle through the art using key presses. This is useful for quickly finding a specific image or pausing on one you like.
+
+To enable this, you need to map the `&art_next` and `&art_prev` behaviors to keys in your keymap. It's highly recommended to place these on a separate layer to avoid overriding your standard key functions (like arrow keys).
+
+Here is an example snippet for your `.keymap` file:
+
+```dts
+/ {
+    keymap {
+        compatible = "zmk,keymap";
+
+        default_layer {
+            bindings = <
+                /* ... other keys ... */  &kp LEFT  &kp DOWN  &kp RIGHT  /* ... */
+                /* ... other keys ... */  &mo 1     /* A key to activate your function layer */
+            >;
+        };
+
+        function_layer { // Or whatever you name layer 1
+            bindings = <
+                /* ... other keys ... */  &art_prev  &trans  &art_next  /* ... */
+                /* ... other keys ... */  &trans     /* This key remains the same as on the default layer */
+            >;
+        };
+    };
+};
+```
+With this setup, holding your function key and pressing your left/right arrow keys will cycle through the slideshow.
+
 ### Configuring Your Slideshow
 
 This module operates in a "curator" mode by default to prevent firmware bloat. No art is included unless you explicitly enable it.
@@ -109,17 +140,20 @@ The workflow can be used as a playbook for AI execution.
    ```bash
    ./visualize_art.py boards/shields/nice_view_custom/widgets/arts/<art_name>.c --inverted
    ```
-1. In `boards/shields/nice_view_custom/widgets/peripheral_status.c`, add the following lines for your new art near the top. Remember to replace `<ART_NAME>` with the uppercase version of your art's name.
+1. In `boards/shields/nice_view_custom/widgets/art_slideshow.c`, add the following lines for your new art near the top. Remember to replace `<ART_NAME>` with the uppercase version of your art's name.
     ```c
     #if IS_ENABLED(CONFIG_CUSTOM_ART_<ART_NAME>)
     LV_IMG_DECLARE(<art_name>);
     #endif
     ```
-1. In the same file, add the following lines after `const lv_img_dsc_t *anim_imgs[] = {`. Remember to replace `<ART_NAME>` with the uppercase version of your art's name. Optionally, adding it as the first item in the array so that it shows up first when keyboard is reset.
+1. In the same file, add your art to the `art_images` array. Remember to replace `<ART_NAME>` with the uppercase version of your art's name. Adding it near the top of the list will make it appear earlier in the slideshow.
     ```c
-    #if IS_ENABLED(CONFIG_CUSTOM_ART_<ART_NAME>)
-    &<art_name>,
-    #endif
+    static const lv_img_dsc_t *art_images[] = {
+        #if IS_ENABLED(CONFIG_CUSTOM_ART_<ART_NAME>)
+        &<art_name>,
+        #endif
+        // ... existing images
+    };
     ```
 1. Open `boards/shields/nice_view_custom/Kconfig.defconfig`. This repo uses a "Featured Art" system to avoid firmware bloat for users. When adding new art, you should make it the new featured piece.
     *   **Add the new art's config**, giving it the special `default y if CUSTOM_ART_SURPRISE_ME`.

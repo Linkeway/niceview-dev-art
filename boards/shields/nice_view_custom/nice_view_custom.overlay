@@ -19,4 +19,20 @@
     chosen {
         zephyr,display = &nice_view;
     };
+
+    behaviors {
+        art_next: art_next {
+            compatible = "zmk,behavior-art-control";
+            label = "ART_NEXT";
+            #binding-cells = <0>;
+            param1 = <0>;
+        };
+
+        art_prev: art_prev {
+            compatible = "zmk,behavior-art-control";
+            label = "ART_PREV";
+            #binding-cells = <0>;
+            param1 = <1>;
+        };
+    };
 };
